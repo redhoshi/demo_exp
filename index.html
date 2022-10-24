@@ -4,9 +4,11 @@
     <script src="./dist/jspsych.js"></script>
     <script src="./dist/plugin-survey-likert.js"></script>
     <script src="./dist/plugin-audio-button-response.js"></script>
+    <script src="./dist/plugin-html-button-response.js"></script>
     <script src="./dist/plugin-preload.js"></script>
     <script src="./dist/plugin-instructions.js"></script>
     <link rel="stylesheet" href="./dist/jspsych.css" />
+    <script src="examples/js/play_audio.js"></script>
   </head>
   <body></body>
   <script>
@@ -33,14 +35,25 @@
       show_clickable_nav: true
     };
 
+    //ファイル名書くの面倒だからcsvか何かでimportしても良いかも
 
+    filename = "examples/sound/speech_red.mp3"
+
+    //どっちも流したあと->もう一度示す画面へ
     var audio = {
-        type: jsPsychAudioButtonResponse,
-        stimulus: 'examples/sound/speech_red.mp3',
-        choices: ['#00ff00', '#0000ff', '#ff0000'],
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<button type="button" onclick="connected_play_audiofile(filename)"; class="jspsych-btn">再生</button>',
+        choices:['continute'],
         response_allowed_while_playing: false,
-        button_html: '<div style="background-color: %choice%; width:100px; height:100px;"></div>',
-        prompt: "<p>Which color was said?</p>"
+        //button_html: '<div style="background-color: %choice%; width:100px; height:100px;"></div>',
+        prompt: "<p>Which color was said?</p>",
+        on_start:function(){
+          //connected_play_audiofile('examples/sound/speech_red.mp3');
+        },
+        on_finish:function(data){
+          //dataのlogを書く
+        },
+        randomize_order: true,
     }
 
     var likert_trial = {
@@ -61,7 +74,7 @@
           {prompt: "Question 5", labels: scale}
         ],
         randomize_question_order: true,
-        scale_width: 500
+        scale_width: 600 //幅
     };
 
     jsPsych.run([trial_1, audio, likert_trial, likert_trial_random_order]);
