@@ -16,6 +16,12 @@ var jsPsychSurveyLikert = (function (jspsych) {
                       pretty_name: "Prompt",
                       default: undefined,
                   },
+                  /** the HTML string to be displayed */
+                  stimulus: {
+                    type: jspsych.ParameterType.HTML_STRING,
+                    pretty_name: "Stimulus",
+                    default: undefined,
+                },
                   /** Array of likert labels to display for this question. */
                   labels: {
                       type: jspsych.ParameterType.STRING,
@@ -125,6 +131,9 @@ var jsPsychSurveyLikert = (function (jspsych) {
           if (trial.randomize_question_order) {
               question_order = this.jsPsych.randomization.shuffle(question_order);
           }
+          // add stimulus**
+          html += '<div id="jspsych-survey-likert-statement">' + trial.stimulus + "</div>";
+          
           for (var i = 0; i < trial.questions.length; i++) {
               var question = trial.questions[question_order[i]];
               // add question
@@ -160,6 +169,7 @@ var jsPsychSurveyLikert = (function (jspsych) {
                   '"></input>';
           html += "</form>";
           display_element.innerHTML = html;
+          console.log(display_element,'display_element')
           display_element.querySelector("#jspsych-survey-likert-form").addEventListener("submit", (e) => {
               e.preventDefault();
               // measure response time

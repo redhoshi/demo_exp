@@ -19,7 +19,7 @@
       }
     });
 
-    var scale = ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
+    var scale = ["Strongly Disagree","Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree","Strongly Disagree"];
 
 
     var preload = {
@@ -30,16 +30,18 @@
     var trial_1 = {
       type: jsPsychInstructions,
       pages: ['<p>Welcome to the experiment.</p><p>This is the first set of instructions.</p><p>Click next to begin.</p>',
-        '<p>This is the second page of instructions.</p>',
-        '<p>This is the final page.</p>'],
-      show_clickable_nav: true
+       // '<p>This is the second page of instructions.</p>',
+        //'<p>This is the final page.</p>'
+      ],
+      show_clickable_nav: true,
     };
 
     //ファイル名書くの面倒だからcsvか何かでimportしても良いかも
 
-    filename = "examples/sound/speech_red.mp3"
+    filename = ["examples/sound/speech_red.mp3","examples/sound/speech_red.mp3"]
 
-    //どっちも流したあと->もう一度示す画面へ
+    //1度再生する
+    //何回でも再生可能
     var audio = {
         type: jsPsychHtmlButtonResponse,
         stimulus: '<button type="button" onclick="connected_play_audiofile(filename)"; class="jspsych-btn">再生</button>',
@@ -48,16 +50,14 @@
         //button_html: '<div style="background-color: %choice%; width:100px; height:100px;"></div>',
         prompt: "<p>Which color was said?</p>",
         on_start:function(){
-          //connected_play_audiofile('examples/sound/speech_red.mp3');
-        },
-        on_finish:function(data){
-          //dataのlogを書く
+          connected_play_audiofile(filename);//1番最初に実行
         },
         randomize_order: true,
     }
 
     var likert_trial = {
         type: jsPsychSurveyLikert,
+        stimulus: '<button type="button" onclick="connected_play_audiofile(filename)"; class="jspsych-btn">再生</button>',
         questions: [
           {prompt: "I like vegetables.", name: 'Vegetables', labels: scale, required: true},
           {prompt: "I like fruit.", name: 'Fruit', labels: scale, required: true}
@@ -67,7 +67,7 @@
     var likert_trial_random_order = {
         type: jsPsychSurveyLikert,
         questions: [
-          {prompt: "Question 1", labels: scale},
+          {prompt: "Question 1:Do you like music?", labels: scale},
           {prompt: "Question 2", labels: scale},
           {prompt: "Question 3", labels: scale},
           {prompt: "Question 4", labels: scale},
@@ -76,6 +76,9 @@
         randomize_question_order: true,
         scale_width: 600 //幅
     };
+
+    //read_csvする関数
+    //3つをrandomizeする関数
 
     jsPsych.run([trial_1, audio, likert_trial, likert_trial_random_order]);
     
