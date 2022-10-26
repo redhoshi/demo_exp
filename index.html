@@ -7,6 +7,7 @@
     <script src="./dist/plugin-html-button-response.js"></script>
     <script src="./dist/plugin-preload.js"></script>
     <script src="./dist/plugin-instructions.js"></script>
+    <script src="./dist/plugin-survey-text.js"></script>
     <link rel="stylesheet" href="./dist/jspsych.css" />
     <script src="examples/js/play_audio.js"></script>
   </head>
@@ -38,13 +39,11 @@
 
     //ファイル名書くの面倒だからcsvか何かでimportしても良いかも
 
-    filename = ["examples/sound/speech_red.mp3","examples/sound/speech_red.mp3"]
+    filename = ["examples/sound/speech_red.mp3","examples/sound/speech_blue.mp3"]
 
-    //1度再生する
-    //何回でも再生可能
     var audio = {
         type: jsPsychHtmlButtonResponse,
-        stimulus: '<button type="button" onclick="connected_play_audiofile(filename)"; class="jspsych-btn">再生</button>',
+        stimulus: '<button type="button" onclick="connected_play_audiofile_next(filename)"; class="jspsych-btn">再生</button>',
         choices:['continute'],
         response_allowed_while_playing: false,
         //button_html: '<div style="background-color: %choice%; width:100px; height:100px;"></div>',
@@ -53,6 +52,9 @@
           connected_play_audiofile(filename);//1番最初に実行
         },
         randomize_order: true,
+        on_finish:function(){
+          stop_play_audiofile();
+        }
     }
 
     var likert_trial = {
@@ -74,13 +76,27 @@
           {prompt: "Question 5", labels: scale}
         ],
         randomize_question_order: true,
-        scale_width: 600 //幅
+        scale_width: 600, //幅
     };
 
-    //read_csvする関数
-    //3つをrandomizeする関数
+    var comment = {
+      type: jsPsychSurveyText,
+      //preamble: `実験に関して何か質問・コメント等ありましたら記述してください`,
+      questions: [
+        {prompt: '実験に関して何か質問・コメント等ありましたら記述してください', rows: 5}
+      ]
+    }
 
-    jsPsych.run([trial_1, audio, likert_trial, likert_trial_random_order]);
+    var thankyou = {
+      type: jsPsychHtmlButtonResponse,
+        stimulus: 'ご協力ありがとうございました',
+        choices:['continute'],
+        on_start:function(){
+          jsPsych.data.get().localSave('csv', 'data.csv');
+        }
+    }
+
+    jsPsych.run([trial_1, audio, likert_trial, likert_trial_random_order,comment,thankyou]);
     
   </script>
 </html>
