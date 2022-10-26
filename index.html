@@ -22,6 +22,9 @@
 
     var scale = ["Strongly Disagree","Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree","Strongly Disagree"];
 
+    var page_num = 1;
+
+    var ntrials = 30;
 
     var preload = {
         type: jsPsychPreload,
@@ -36,8 +39,6 @@
       ],
       show_clickable_nav: true,
     };
-
-    //ファイル名書くの面倒だからcsvか何かでimportしても良いかも
 
     filename = ["examples/sound/speech_red.mp3","examples/sound/speech_blue.mp3"]
 
@@ -58,19 +59,21 @@
 
     var likert_trial = {
         type: jsPsychSurveyLikert,
-        stimulus: '</br><button type="button" onclick="connected_play_audiofile(filename)"; class="jspsych-btn">再生</button>',
+        stimulus: '<b>問題</b></br><button type="button" onclick="connected_play_audiofile(filename)"; class="jspsych-btn">再生</button>',
         questions: [
           {prompt: "Question 1:I like vegetables.", name: 'Vegetables', labels: scale, required: true},
           {prompt: "Question 2:I like fruit.", name: 'Fruit', labels: scale, required: true}
         ],
         randomize_question_order: true,
         scale_width: 600, 
-        on_start:function(){
+        on_start:function(trial){
           connected_play_audiofile(filename);
+          trial.stimulus = ("<h4>Quiz：").concat(page_num.toString()).concat("/").concat(ntrials.toString()).concat("</h4><button type='button' onclick='connected_play_audiofile(filename)'; class='jspsych-btn'>再生</button>");
         },
         randomize_order: true,
         on_finish:function(){
           stop_play_audiofile();
+          page_num++;
         }
     };
 

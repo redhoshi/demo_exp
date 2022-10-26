@@ -43,5 +43,5 @@ async function connected_play_audiofile_next(source){
 }
 
   async function stop_play_audiofile(){ //sourceがない
-      sound.stop();
+      sound.pause();
   }
