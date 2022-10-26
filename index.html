@@ -46,10 +46,9 @@
         stimulus: '<button type="button" onclick="connected_play_audiofile_next(filename)"; class="jspsych-btn">再生</button>',
         choices:['continute'],
         response_allowed_while_playing: false,
-        //button_html: '<div style="background-color: %choice%; width:100px; height:100px;"></div>',
         prompt: "<p>Which color was said?</p>",
         on_start:function(){
-          connected_play_audiofile(filename);//1番最初に実行
+          connected_play_audiofile(filename);
         },
         randomize_order: true,
         on_finish:function(){
@@ -59,29 +58,29 @@
 
     var likert_trial = {
         type: jsPsychSurveyLikert,
-        stimulus: '<button type="button" onclick="connected_play_audiofile(filename)"; class="jspsych-btn">再生</button>',
+        stimulus: '</br><button type="button" onclick="connected_play_audiofile(filename)"; class="jspsych-btn">再生</button>',
         questions: [
-          {prompt: "I like vegetables.", name: 'Vegetables', labels: scale, required: true},
-          {prompt: "I like fruit.", name: 'Fruit', labels: scale, required: true}
-        ],
-    };
-
-    var likert_trial_random_order = {
-        type: jsPsychSurveyLikert,
-        questions: [
-          {prompt: "Question 1:Do you like music?", labels: scale},
-          {prompt: "Question 2", labels: scale},
-          {prompt: "Question 3", labels: scale},
-          {prompt: "Question 4", labels: scale},
-          {prompt: "Question 5", labels: scale}
+          {prompt: "Question 1:I like vegetables.", name: 'Vegetables', labels: scale, required: true},
+          {prompt: "Question 2:I like fruit.", name: 'Fruit', labels: scale, required: true}
         ],
         randomize_question_order: true,
-        scale_width: 600, //幅
+        scale_width: 600, 
+        on_start:function(){
+          connected_play_audiofile(filename);
+        },
+        randomize_order: true,
+        on_finish:function(){
+          stop_play_audiofile();
+        }
     };
+
+    var trial_count = {
+      timeline:[likert_trial],
+      repetitions: 3,
+    }
 
     var comment = {
       type: jsPsychSurveyText,
-      //preamble: `実験に関して何か質問・コメント等ありましたら記述してください`,
       questions: [
         {prompt: '実験に関して何か質問・コメント等ありましたら記述してください', rows: 5}
       ]
@@ -96,7 +95,7 @@
         }
     }
 
-    jsPsych.run([trial_1, audio, likert_trial, likert_trial_random_order,comment,thankyou]);
+    jsPsych.run([trial_1, trial_count, comment,thankyou]);
     
   </script>
 </html>
