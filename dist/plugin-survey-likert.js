@@ -169,7 +169,6 @@ var jsPsychSurveyLikert = (function (jspsych) {
                   '"></input>';
           html += "</form>";
           display_element.innerHTML = html;
-          console.log(display_element,'display_element')
           display_element.querySelector("#jspsych-survey-likert-form").addEventListener("submit", (e) => {
               e.preventDefault();
               // measure response time
