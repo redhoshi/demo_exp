@@ -10,6 +10,7 @@
     <script src="./dist/plugin-survey-text.js"></script>
     <link rel="stylesheet" href="./dist/jspsych.css" />
     <script src="examples/js/play_audio.js"></script>
+    <script src="examples/js/helper.js"></script>
   </head>
   <body></body>
   <script>
@@ -20,11 +21,54 @@
       }
     });
 
-    var scale = ["Strongly Disagree","Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree","Strongly Disagree"];
+    var scale1 = ["変わらない","", "", "", "", "","変わった"];
 
-    var page_num = 1;
+    var scale2 = ["聞きにくい","", "", "", "", "","聞きやすい"];
+
+    var scale3 = ["不快","", "", "", "", "","快"];
+
+    var scale4 = ["遅い","", "", "", "", "","速い"];
+
+    var scale5 = ["ない","", "", "", "", "","ある"];
+
+    var page_num = 0;
 
     var ntrials = 30;
+    
+    var sound_index = [];
+
+    filename = ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"]
+
+    filename = [["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
+                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],]
 
     var preload = {
         type: jsPsychPreload,
@@ -34,41 +78,42 @@
     var trial_1 = {
       type: jsPsychInstructions,
       pages: ['<p>Welcome to the experiment.</p><p>This is the first set of instructions.</p><p>Click next to begin.</p>',
-       // '<p>This is the second page of instructions.</p>',
-        //'<p>This is the final page.</p>'
       ],
       show_clickable_nav: true,
+      on_start:function(){
+        for(i=0;i<ntrials;i++){sound_index[i]=i;}
+        sound_index = create_index(sound_index)
+        filename = shuffle_file(filename);
+      }
     };
 
-    filename = ["examples/sound/speech_red.mp3","examples/sound/speech_blue.mp3"]
+
 
     var audio = {
         type: jsPsychHtmlButtonResponse,
-        stimulus: '<button type="button" onclick="connected_play_audiofile_next(filename)"; class="jspsych-btn">再生</button>',
+        stimulus: '<button type="button" onclick="connected_play_audiofile_next(filename[sound_index[page_num]])"; class="jspsych-btn">再生</button>',
         choices:['continute'],
         response_allowed_while_playing: false,
-        prompt: "<p>Which color was said?</p>",
+        prompt: "<p>練習</p>",
         on_start:function(){
-          connected_play_audiofile(filename);
-        },
-        randomize_order: true,
-        on_finish:function(){
-          stop_play_audiofile();
         }
     }
 
     var likert_trial = {
         type: jsPsychSurveyLikert,
-        stimulus: '<b>問題</b></br><button type="button" onclick="connected_play_audiofile(filename)"; class="jspsych-btn">再生</button>',
+        stimulus: '<b>問題</b></br><button type="button" onclick="connected_play_audiofile(filename[sound_index[page_num]])"; class="jspsych-btn">再生</button>',
         questions: [
-          {prompt: "Question 1:I like vegetables.", name: 'Vegetables', labels: scale, required: true},
-          {prompt: "Question 2:I like fruit.", name: 'Fruit', labels: scale, required: true}
+          {prompt: "Q1 : 全体的な印象の変化", name: 'Vegetables', labels: scale1, required: true},
+          {prompt: "Q2 : 聞きやすさ", name: 'Fruit', labels: scale2, required: true},
+          {prompt: "Q3 : 快・不快", name: 'Fruit', labels: scale3, required: true},
+          {prompt: "Q4 : テンポ感", name: 'Fruit', labels: scale4, required: true},
+          {prompt: "Q5 : リズム感", name: 'Fruit', labels: scale5, required: true}
         ],
-        randomize_question_order: true,
         scale_width: 600, 
         on_start:function(trial){
-          connected_play_audiofile(filename);
-          trial.stimulus = ("<h4>Quiz：").concat(page_num.toString()).concat("/").concat(ntrials.toString()).concat("</h4><button type='button' onclick='connected_play_audiofile(filename)'; class='jspsych-btn'>再生</button>");
+          console.log(sound_index[page_num]);
+          connected_play_audiofile(filename[sound_index[page_num]]);
+          trial.stimulus = ("<h4>Quiz：").concat((page_num+1).toString()).concat("/").concat(ntrials.toString()).concat("</h4><button type='button' onclick='connected_play_audiofile(filename[sound_index[page_num]])'; class='jspsych-btn'>再生</button>");
         },
         randomize_order: true,
         on_finish:function(){
