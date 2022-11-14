@@ -8,7 +8,9 @@
     <script src="./dist/plugin-preload.js"></script>
     <script src="./dist/plugin-instructions.js"></script>
     <script src="./dist/plugin-survey-text.js"></script>
+    <script src="./dist/plugin-fullscreen.js"></script>
     <link rel="stylesheet" href="./dist/jspsych.css" />
+    <link rel="stylesheet" href="examples/css/style.css" />
     <script src="examples/js/play_audio.js"></script>
     <script src="examples/js/helper.js"></script>
   </head>
@@ -23,13 +25,13 @@
 
     var scale1 = ["変わらない","", "", "", "", "","変わった"];
 
-    var scale2 = ["聞きにくい","", "", "", "", "","聞きやすい"];
+    var scale2 = ["聞きにくい","", "", "どちらでもない", "", "","聞きやすい"];
 
-    var scale3 = ["不快","", "", "", "", "","快"];
+    var scale3 = ["不快","", "", "どちらでもない", "", "","快"];
 
-    var scale4 = ["遅い","", "", "", "", "","速い"];
+    var scale4 = ["遅い","", "", "どちらでもない", "", "","速い"];
 
-    var scale5 = ["ない","", "", "", "", "","ある"];
+    var scale5 = ["ない","", "", "どちらでもない", "", "","ある"];
 
     var page_num = 0;
 
@@ -37,38 +39,44 @@
     
     var sound_index = [];
 
-    filename = ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"]
+    pre_filename = ["examples/sound/Practice/HIsim_千本桜_Agrm70yr_Male_Cmprs100_Src70dB.wav","examples/sound/Practice/Nrmlz_千本桜_Src70dB.wav"]
 
-    filename = [["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],
-                ["examples/sound/clap.wav","examples/sound/speech_blue.mp3"],]
+    filename = [["examples/sound/HIsim_20221114T135331/HIsim_01 Jupiter_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_01 Jupiter_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_02 ワダツミの木_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_02 ワダツミの木_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_03 瞳をとじて_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_03 瞳をとじて_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_04 さくら (独唱)_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_04 さくら (独唱)_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_05 月のしずく_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_05 月のしずく_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_06 Don't Leave Me_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_06 Don't Leave Me_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_07 SAY YES-01_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_07 SAY YES-01_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_08 花 -Memento-Mori-_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_08 花 -Memento-Mori-_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_09 my graduation_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_09 my graduation_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_10 花_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_10 花_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_11 Automatic_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_11 Automatic_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_12 チェリー_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_12 チェリー_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_13 世界に一つだけの花 (シングル・ヴァージョン)_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_13 世界に一つだけの花 (シングル・ヴァージョン)_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_14 Can You Keep A Secret-_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_14 Can You Keep A Secret-_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_15 涙のキッス-01_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_15 涙のキッス-01_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_16 空と君のあいだに_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_16 空と君のあいだに_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_17 Winter, again_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_17 Winter, again_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_18 ラブ・ストーリーは突然に-01_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_18 ラブ・ストーリーは突然に-01_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_19 悲しみは雪のように-01_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_19 悲しみは雪のように-01_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_20 それが大事-01_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_20 それが大事-01_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_21 硝子の少年_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_21 硝子の少年_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_22 どんなときも。-01_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_22 どんなときも。-01_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_23 Timing 〜タイミング〜_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_23 Timing 〜タイミング〜_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_24 恋愛レボリューション21_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_24 恋愛レボリューション21_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_25 青春アミーゴ_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_25 青春アミーゴ_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_26 浪漫飛行_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_26 浪漫飛行_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_27 おどるポンポコリン_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_27 おどるポンポコリン_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_28 independent_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_28 independent_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_29 HELLO_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_29 HELLO_Src70dB.wav"],
+                ["examples/sound/HIsim_20221114T135331/HIsim_30 今すぐKiss Me_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_30 今すぐKiss Me_Src70dB.wav"],]
+
+
+    var fullscreen_trial = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: true
+    };
 
     var preload = {
         type: jsPsychPreload,
@@ -83,37 +91,56 @@
       on_start:function(){
         for(i=0;i<ntrials;i++){sound_index[i]=i;}
         sound_index = create_index(sound_index)
-        filename = shuffle_file(filename);
-      }
+      },
     };
 
 
 
-    var audio = {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: '<button type="button" onclick="connected_play_audiofile_next(filename[sound_index[page_num]])"; class="jspsych-btn">再生</button>',
-        choices:['continute'],
-        response_allowed_while_playing: false,
-        prompt: "<p>練習</p>",
-        on_start:function(){
-        }
+    var practice_trial = {
+      type: jsPsychSurveyLikert,
+        stimulus: '<b>問題</b></br><button type="button" onclick="connected_play_audiofile()"; class="jspsych-btn">再生</button>',
+        questions: [
+          {prompt: "Q1 : 全体的な印象の変化", name: 'Q1', labels: scale1, required: true},
+          {prompt: "Q2 : 聞きやすさ", name: 'Q2', labels: scale2, required: true},
+          {prompt: "Q3 : 快・不快", name: 'Q3', labels: scale3, required: true},
+          {prompt: "Q4 : テンポ感", name: 'Q4', labels: scale4, required: true},
+          {prompt: "Q5 : リズム感", name: 'Q5', labels: scale5, required: true}
+        ],
+        scale_width: 700, 
+        on_start:function(trial){
+          pre_mixed_file = shuffle_file([pre_filename]);
+          connected_play_audiofile(pre_mixed_file[0]);
+          jsPsych.data.get().push(pre_mixed_file[0]);
+          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz：").concat("</h4><button type='button' onclick='connected_play_audiofile(pre_mixed_file[0])'; class='jspsych-btn'>再生</button>").concat('<nav class="nav"></nav></div></header>');
+        },
+        randomize_order: true,
+        on_finish:function(){
+        stop_play_audiofile();
+      }
+    }
+
+    var buffer_trial = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: '<p style="font-size:38px; color:red;">Start experiment!</p>',
+      choices: ['Start'],
     }
 
     var likert_trial = {
         type: jsPsychSurveyLikert,
         stimulus: '<b>問題</b></br><button type="button" onclick="connected_play_audiofile(filename[sound_index[page_num]])"; class="jspsych-btn">再生</button>',
         questions: [
-          {prompt: "Q1 : 全体的な印象の変化", name: 'Vegetables', labels: scale1, required: true},
-          {prompt: "Q2 : 聞きやすさ", name: 'Fruit', labels: scale2, required: true},
-          {prompt: "Q3 : 快・不快", name: 'Fruit', labels: scale3, required: true},
-          {prompt: "Q4 : テンポ感", name: 'Fruit', labels: scale4, required: true},
-          {prompt: "Q5 : リズム感", name: 'Fruit', labels: scale5, required: true}
+          {prompt: "Q1 : 全体的な印象の変化", name: 'Q1', labels: scale1, required: true},
+          {prompt: "Q2 : 聞きやすさ", name: 'Q2', labels: scale2, required: true},
+          {prompt: "Q3 : 快・不快", name: 'Q3', labels: scale3, required: true},
+          {prompt: "Q4 : テンポ感", name: 'Q4', labels: scale4, required: true},
+          {prompt: "Q5 : リズム感", name: 'Q5', labels: scale5, required: true}
         ],
-        scale_width: 600, 
+        scale_width: 700, 
         on_start:function(trial){
-          console.log(sound_index[page_num]);
-          connected_play_audiofile(filename[sound_index[page_num]]);
-          trial.stimulus = ("<h4>Quiz：").concat((page_num+1).toString()).concat("/").concat(ntrials.toString()).concat("</h4><button type='button' onclick='connected_play_audiofile(filename[sound_index[page_num]])'; class='jspsych-btn'>再生</button>");
+          mixed_file = shuffle_file([filename[sound_index[page_num]]]);
+          connected_play_audiofile(mixed_file[0]);
+          jsPsych.data.get().push(mixed_file[0]);
+          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz：").concat((page_num+1).toString()).concat("/").concat(ntrials.toString()).concat("</h4><button type='button' onclick='connected_play_audiofile(mixed_file[0])'; class='jspsych-btn'>再生</button>").concat('<nav class="nav"></nav></div></header>');
         },
         randomize_order: true,
         on_finish:function(){
@@ -124,7 +151,7 @@
 
     var trial_count = {
       timeline:[likert_trial],
-      repetitions: 3,
+      repetitions: 30,
     }
 
     var comment = {
@@ -143,7 +170,7 @@
         }
     }
 
-    jsPsych.run([trial_1, trial_count, comment,thankyou]);
+    jsPsych.run([fullscreen_trial, trial_1, practice_trial, buffer_trial, trial_count, comment,thankyou]);
     
   </script>
 </html>
