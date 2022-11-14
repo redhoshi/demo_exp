@@ -84,10 +84,13 @@
     }
 
     var trial_1 = {
-      type: jsPsychInstructions,
-      pages: ['<p>Welcome to the experiment.</p><p>This is the first set of instructions.</p><p>Click next to begin.</p>',
+      type: jsPsychSurveyText,
+      /*pages: ['<p>Welcome to the experiment.</p><p>This is the first set of instructions.</p><p>Click next to begin.</p>',
+      ],*/
+      questions:[
+        {prompt:'参加者IDを入力してください',columns: 20, required: true, name: 'participantID'}
       ],
-      show_clickable_nav: true,
+      //show_clickable_nav: true,
       on_start:function(){
         for(i=0;i<ntrials;i++){sound_index[i]=i;}
         sound_index = create_index(sound_index)
@@ -111,7 +114,7 @@
           pre_mixed_file = shuffle_file([pre_filename]);
           connected_play_audiofile(pre_mixed_file[0]);
           jsPsych.data.get().push(pre_mixed_file[0]);
-          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz：").concat("</h4><button type='button' onclick='connected_play_audiofile(pre_mixed_file[0])'; class='jspsych-btn'>再生</button>").concat('<nav class="nav"></nav></div></header>');
+          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz：").concat("</h4><button type='button' onclick='connected_play_audiofile(pre_mixed_file[0])'; class='jspsych-btn2'>再生</button>").concat('<nav class="nav"></nav></div></header>');
         },
         randomize_order: true,
         on_finish:function(){
@@ -140,7 +143,7 @@
           mixed_file = shuffle_file([filename[sound_index[page_num]]]);
           connected_play_audiofile(mixed_file[0]);
           jsPsych.data.get().push(mixed_file[0]);
-          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz：").concat((page_num+1).toString()).concat("/").concat(ntrials.toString()).concat("</h4><button type='button' onclick='connected_play_audiofile(mixed_file[0])'; class='jspsych-btn'>再生</button>").concat('<nav class="nav"></nav></div></header>');
+          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz：").concat((page_num+1).toString()).concat("/").concat(ntrials.toString()).concat("</h4><button type='button' onclick='connected_play_audiofile(mixed_file[0])'; class='jspsych-btn2'>再生</button>").concat('<nav class="nav"></nav></div></header>');
         },
         randomize_order: true,
         on_finish:function(){
@@ -151,7 +154,7 @@
 
     var trial_count = {
       timeline:[likert_trial],
-      repetitions: 30,
+      repetitions: 2,
     }
 
     var comment = {

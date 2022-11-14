@@ -98,11 +98,11 @@ var jsPsychSurveyLikert = (function (jspsych) {
           // inject CSS for trial
           html += '<style id="jspsych-survey-likert-css">';
           html +=
-              ".jspsych-survey-likert-statement { display:block; font-size: 15px; padding-top: 30px; margin-bottom:10px; }" +
+              ".jspsych-survey-likert-statement { display:block; font-size: 18px; padding-top: 30px; margin-bottom:13px; }" +
                   ".jspsych-survey-likert-opts { list-style:none; width:" +
                   w +
                   "; margin:auto; padding:0 0 30px; display:block; font-size: 14px; line-height:1.1em; }" +
-                  ".jspsych-survey-likert-opt-label { line-height: 0.9em; color: #444; }" +
+                  ".jspsych-survey-likert-opt-label { line-height: 1.1em; color: #444; }" +
                   ".jspsych-survey-likert-opts:before { content: ''; position:relative; top:11px; /*left:9.5%;*/ display:block; background-color:#efefef; height:3px; width:100%; }" +
                   ".jspsych-survey-likert-opts:last-of-type { border-bottom: 0; }" +
                   ".jspsych-survey-likert-opts li { display:inline-block; /*width:19%;*/ text-align:center; vertical-align: top; }" +
