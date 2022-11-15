@@ -29,6 +29,7 @@ async function connected_play_audiofile(source){
 
 async function connected_play_audiofile_next(source){
   stop_play_audiofile();
+  const btn = document.querySelector("#btn-play");
     sound.src = source[0];
     sound.play();
     var count = 0;

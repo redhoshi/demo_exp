@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="examples/css/style.css" />
     <script src="examples/js/play_audio.js"></script>
     <script src="examples/js/helper.js"></script>
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <title>模擬難聴実験</title>
   </head>
   <body></body>
   <script>
@@ -85,12 +87,9 @@
 
     var trial_1 = {
       type: jsPsychSurveyText,
-      /*pages: ['<p>Welcome to the experiment.</p><p>This is the first set of instructions.</p><p>Click next to begin.</p>',
-      ],*/
       questions:[
-        {prompt:'参加者IDを入力してください',columns: 20, required: true, name: 'participantID'}
+        {prompt:'参加者IDを入力して"Continue"を押してください',columns: 20, required: true, name: 'participantID'}
       ],
-      //show_clickable_nav: true,
       on_start:function(){
         for(i=0;i<ntrials;i++){sound_index[i]=i;}
         sound_index = create_index(sound_index)
@@ -114,7 +113,8 @@
           pre_mixed_file = shuffle_file([pre_filename]);
           connected_play_audiofile(pre_mixed_file[0]);
           jsPsych.data.get().push(pre_mixed_file[0]);
-          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz：").concat("</h4><button type='button' onclick='connected_play_audiofile(pre_mixed_file[0])'; class='jspsych-btn2'>再生</button>").concat('<nav class="nav"></nav></div></header>');
+          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz").
+            concat("                <button type='button' id='btn-play' onclick='connected_play_audiofile(pre_mixed_file[0])'; class='jspsych-btn2'>再生</button></h4>").concat('<nav class="nav"></nav></div></header>');
         },
         randomize_order: true,
         on_finish:function(){
@@ -124,7 +124,7 @@
 
     var buffer_trial = {
       type: jsPsychHtmlButtonResponse,
-      stimulus: '<p style="font-size:38px; color:red;">Start experiment!</p>',
+      stimulus: '<p style="font-size:38px; color:#a9a9a9;">Start experiment!</br></p>',
       choices: ['Start'],
     }
 
@@ -143,7 +143,9 @@
           mixed_file = shuffle_file([filename[sound_index[page_num]]]);
           connected_play_audiofile(mixed_file[0]);
           jsPsych.data.get().push(mixed_file[0]);
-          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz：").concat((page_num+1).toString()).concat("/").concat(ntrials.toString()).concat("</h4><button type='button' onclick='connected_play_audiofile(mixed_file[0])'; class='jspsych-btn2'>再生</button>").concat('<nav class="nav"></nav></div></header>');
+          trial.stimulus = 
+          ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz：").concat((page_num+1).toString()).concat("/").concat(ntrials.toString()).
+            concat("<button type='button' onclick='connected_play_audiofile(mixed_file[0])'; class='jspsych-btn2'>再生</button></h4>").concat('<nav class="nav"></nav></div></header>');
         },
         randomize_order: true,
         on_finish:function(){

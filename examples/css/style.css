@@ -4,8 +4,31 @@
   
 .site-header {
 position: relative;
-background-color: #def7ff; }
+/*background-color: #a9a9a9;*/ }
 
 .site-header__wrapper {
-padding-top: 1rem;
-padding-bottom: 1rem; }
+    margin: 0;
+    padding-top: 1rem;
+    padding-bottom: 1rem; 
+}
+
+h4 {
+    position: relative;
+    background: #f0f8ff;/*#f1f8ff*/
+    padding: 1.0em 0.6em;
+    border-left: solid 2em #738290;
+    font-size: 25px;
+  }
+  
+  h4:before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f025"; /*\f303*/
+    position: absolute;
+    padding: 0em;
+    color: white;
+        font-weight: 700;
+    left: -1.5em;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
