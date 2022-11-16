@@ -135,7 +135,7 @@
           pre_mixed_file = shuffle_file([pra_filename[pra_sound_index[page_num]]]);
           connected_play_audiofile(pre_mixed_file[0]);
           jsPsych.data.get().push(pre_mixed_file[0]);
-          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4> - 練習 - </br></br> Quiz : ").concat((page_num+1).toString()).concat(" / ").concat(pra_ntrials.toString()).concat("</h4>")
+          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4> - 練習 - </br></br> 実験 : ").concat((page_num+1).toString()).concat(" / ").concat(pra_ntrials.toString()).concat("</h4>")
             .concat("<button type='button' id='btn-play' onclick='connected_play_audiofile(pre_mixed_file[0])'; class='jspsych-btn2'>再生</button>").concat('<nav class="nav"></nav></div></header>');
         },
         randomize_order: true,
@@ -175,7 +175,7 @@
           connected_play_audiofile(mixed_file[0]);
           jsPsych.data.get().push(mixed_file[0]);
           trial.stimulus = 
-          ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4> - 本番 - </br></br> Quiz : ").concat((page_num+1).toString()).concat("/").concat(ntrials.toString()).concat("</h4>")
+          ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4> - 本番 - </br></br> 実験 : ").concat((page_num+1).toString()).concat("/").concat(ntrials.toString()).concat("</h4>")
             .concat("<button type='button' onclick='connected_play_audiofile(mixed_file[0])'; class='jspsych-btn2'>再生</button></h4>").concat('<nav class="nav"></nav></div></header>');
         },
         randomize_order: true,
@@ -199,7 +199,7 @@
 
     var thankyou = {
       type: jsPsychHtmlButtonResponse,
-        stimulus: '質問は以上です。お疲れ様でした。</br>終了したことを実験実施者へお伝えください。</br>ご協力いただきありがとうございました。',
+        stimulus: '質問は以上です。お疲れ様でした。</br>終了したことを実験実施者へお伝えください。</br>画面はこのままの状態にしておいてください。</br>ご協力いただきありがとうございました。',
         choices:['Download data'],
         on_finish:function(){
           jsPsych.data.get().localSave('csv', 'data.csv');
