@@ -6,7 +6,6 @@ function create_index(array){
         newArray.push(array[k]);
         array.splice(k, 1);
     }
-    console.log('newarray2',newArray,array)
     return newArray
 }
 

@@ -11,7 +11,6 @@ init();
 var sound = new Audio();
 
 async function connected_play_audiofile(source){
-    console.log(source);
     sound.preload = "auto";
     sound.src = source[0];
     sound.play();
@@ -44,6 +43,6 @@ async function connected_play_audiofile_next(source){
     });
 }
 
-  async function stop_play_audiofile(){ //sourceがない
+  async function stop_play_audiofile(){ 
       sound.pause();
   }
