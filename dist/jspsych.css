@@ -382,8 +382,7 @@
 .jspsych-btn2 {
   display: inline-block;
   padding: 8px 16px;
-  margin: 0px;
-  margin-left: 180px;
+  margin: 0px; /*再生ボタンの位置：  margin-left: 180px; */
   font-size: 14px;
   font-weight: 400;
   font-family: "Open Sans", "Arial", sans-serif;

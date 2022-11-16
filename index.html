@@ -14,7 +14,7 @@
     <script src="examples/js/play_audio.js"></script>
     <script src="examples/js/helper.js"></script>
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-    <title>模擬難聴実験</title>
+    <title>【加齢性難聴に伴う楽曲の印象変化～周波数特性とテンポに着目して～】における実験</title>
   </head>
   <body></body>
   <script>
@@ -38,10 +38,16 @@
     var page_num = 0;
 
     var ntrials = 30;
+
+    var pra_ntrials = 3;
     
     var sound_index = [];
 
-    pre_filename = ["examples/sound/Practice/HIsim_千本桜_Agrm70yr_Male_Cmprs100_Src70dB.wav","examples/sound/Practice/Nrmlz_千本桜_Src70dB.wav"]
+    var pra_sound_index = [];;
+
+    pra_filename = [["examples/sound/Practice/HIsim_千本桜_Agrm70yr_Male_Cmprs100_Src70dB.wav","examples/sound/Practice/Nrmlz_千本桜_Src70dB.wav"],
+                    ["examples/sound/Practice/HIsim_04 さくら (独唱)_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Practice/Nrmlz_03 瞳をとじて_Src70dB.wav"],
+                    ["/Users/shihoakaki/Desktop/summer2022/demo/demo_exp/examples/sound/Practice/HIsim_13 世界に一つだけの花 (シングル・ヴァージョン)_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Practice/Nrmlz_13 世界に一つだけの花 (シングル・ヴァージョン)_Src70dB.wav"]]
 
     filename = [["examples/sound/HIsim_20221114T135331/HIsim_01 Jupiter_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_01 Jupiter_Src70dB.wav"],
                 ["examples/sound/HIsim_20221114T135331/HIsim_02 ワダツミの木_Agrm70yr_Male_Cmprs50_Src70dB.wav","examples/sound/Nrmlz_20221114T135331/Nrmlz_02 ワダツミの木_Src70dB.wav"],
@@ -88,19 +94,35 @@
     var trial_1 = {
       type: jsPsychSurveyText,
       questions:[
-        {prompt:'参加者IDを入力して"Continue"を押してください',columns: 20, required: true, name: 'participantID'}
+        {prompt:'参加者IDを入力して"Continue"を押してください',columns: 20, required: true, name: 'participantID'},
       ],
       on_start:function(){
         for(i=0;i<ntrials;i++){sound_index[i]=i;}
-        sound_index = create_index(sound_index)
+        for(i=0;i<pra_ntrials;i++){pra_sound_index[i]=i;}
+        sound_index = create_index(sound_index);
+        pra_sound_index = create_index(pra_sound_index);
       },
     };
 
-
+    var instruct = {
+      type: jsPsychInstructions,
+      pages: [
+      '<h1>Instruction</h1>' +
+      '<br>' + 
+      '<div class="instruct-page">'+
+      '<ul><li>本実験では、連続して再生される聞こえの異なる２つの音の印象の変化を質問します。</li><li>実験参加者は２つの音を聞き比べ、「２つ目の音は１つ目の音に比べてどのくらい印象が変わったか」を項目（全５項目）ごとに回答してください。</li></ul></div>' +
+      '<img src="examples/img/inst.png" width="50%" height="auto"></img>'+
+      '<div class="instruct-page">'+
+      '<ul><li>質問数は30で、時間は目安として30~45分ほどかかります。途中休憩をとったり目安の時間を越しても問題はありません。</li><li>音は何度でも聞くことができます。もう一度再生するには、「再生ボタン」をクリックしてください。</li><li>項目への回答が終わりましたら画面下の「Continue」クリックして次の項目に進んでください。</li><li>何か質問がある場合は実験実施者へお聞きください。実験の途中でも問題ありません。</li></ul>'+
+      '</div>',
+      'それではまず、練習として質問を３つ行います。</br>準備が整いましたら"Next"を押してください。'
+      ],
+      show_clickable_nav: true
+    }
 
     var practice_trial = {
       type: jsPsychSurveyLikert,
-        stimulus: '<b>問題</b></br><button type="button" onclick="connected_play_audiofile()"; class="jspsych-btn">再生</button>',
+        stimulus: '',
         questions: [
           {prompt: "Q1 : 全体的な印象の変化", name: 'Q1', labels: scale1, required: true},
           {prompt: "Q2 : 聞きやすさ", name: 'Q2', labels: scale2, required: true},
@@ -110,27 +132,36 @@
         ],
         scale_width: 700, 
         on_start:function(trial){
-          pre_mixed_file = shuffle_file([pre_filename]);
+          pre_mixed_file = shuffle_file([pra_filename[pra_sound_index[page_num]]]);
           connected_play_audiofile(pre_mixed_file[0]);
           jsPsych.data.get().push(pre_mixed_file[0]);
-          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz").
-            concat("                <button type='button' id='btn-play' onclick='connected_play_audiofile(pre_mixed_file[0])'; class='jspsych-btn2'>再生</button></h4>").concat('<nav class="nav"></nav></div></header>');
+          trial.stimulus = ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4> - 練習 - </br></br> Quiz : ").concat((page_num+1).toString()).concat(" / ").concat(pra_ntrials.toString()).concat("</h4>")
+            .concat("<button type='button' id='btn-play' onclick='connected_play_audiofile(pre_mixed_file[0])'; class='jspsych-btn2'>再生</button>").concat('<nav class="nav"></nav></div></header>');
         },
         randomize_order: true,
         on_finish:function(){
         stop_play_audiofile();
-      }
+        page_num++;
+      },
+    }
+
+    var pra_timeline = {
+      timeline:[practice_trial],
+      repetitions:pra_ntrials,
     }
 
     var buffer_trial = {
       type: jsPsychHtmlButtonResponse,
-      stimulus: '<p style="font-size:38px; color:#a9a9a9;">Start experiment!</br></p>',
-      choices: ['Start'],
+      stimulus: 'それでは、ここから本番となります。</br>質問数は30です。</br>準備が整いましたら"Next"を押してください。',
+      choices: ['Next'],
+      on_finish:function(){
+        page_num = 0;
+      }
     }
 
     var likert_trial = {
         type: jsPsychSurveyLikert,
-        stimulus: '<b>問題</b></br><button type="button" onclick="connected_play_audiofile(filename[sound_index[page_num]])"; class="jspsych-btn">再生</button>',
+        stimulus: '',
         questions: [
           {prompt: "Q1 : 全体的な印象の変化", name: 'Q1', labels: scale1, required: true},
           {prompt: "Q2 : 聞きやすさ", name: 'Q2', labels: scale2, required: true},
@@ -144,8 +175,8 @@
           connected_play_audiofile(mixed_file[0]);
           jsPsych.data.get().push(mixed_file[0]);
           trial.stimulus = 
-          ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4>Quiz：").concat((page_num+1).toString()).concat("/").concat(ntrials.toString()).
-            concat("<button type='button' onclick='connected_play_audiofile(mixed_file[0])'; class='jspsych-btn2'>再生</button></h4>").concat('<nav class="nav"></nav></div></header>');
+          ('<header class="site-header"><div class="wrapper site-header__wrapper">').concat("<h4> - 本番 - </br></br> Quiz : ").concat((page_num+1).toString()).concat("/").concat(ntrials.toString()).concat("</h4>")
+            .concat("<button type='button' onclick='connected_play_audiofile(mixed_file[0])'; class='jspsych-btn2'>再生</button></h4>").concat('<nav class="nav"></nav></div></header>');
         },
         randomize_order: true,
         on_finish:function(){
@@ -168,14 +199,13 @@
 
     var thankyou = {
       type: jsPsychHtmlButtonResponse,
-        stimulus: 'ご協力ありがとうございました',
-        choices:['continute'],
-        on_start:function(){
+        stimulus: '質問は以上です。お疲れ様でした。</br>終了したことを実験実施者へお伝えください。</br>ご協力いただきありがとうございました。',
+        choices:['Download data'],
+        on_finish:function(){
           jsPsych.data.get().localSave('csv', 'data.csv');
         }
     }
-
-    jsPsych.run([fullscreen_trial, trial_1, practice_trial, buffer_trial, trial_count, comment,thankyou]);
+    jsPsych.run([fullscreen_trial, trial_1, instruct, pra_timeline, buffer_trial, trial_count, comment,thankyou]);
     
   </script>
 </html>
